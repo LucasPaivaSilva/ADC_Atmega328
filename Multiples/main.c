@@ -5,7 +5,7 @@
  * Author : Lucas
  */ 
 
-#include "def_principais.h";
+#include "def_principais.h"
 #include "LCD.h"
 
 float readAdc(char chan)
@@ -24,18 +24,13 @@ int main(void)
 	DDRD = 0xFF;
 	unsigned char print[4];
 	ADMUX = (1<<REFS0);     //select AVCC as reference
-	ADCSRA = 0xFF;  //enable and prescale = 128 (16MHz/128 = 125kHz)
+	ADCSRA = 0b10000111;  //enable and prescale = 128 (16MHz/128 = 125kHz)
 	sei();
 	inic_LCD_4bits();
 	/* Replace with your application code */
 	while (1)
 	{
-		if (tst_bit(ADCSRA, ADIF))
-		{
-			clr_bit(ADCSRA, ADIF);
-			escreve_LCD('TESTE');
-			_delay_ms(1000);
-		}
+		_delay_ms(5000);
 		ident_num(readAdc(0), print);
 		cmd_LCD(0x80, 0);
 		cmd_LCD(print[3], 1);
